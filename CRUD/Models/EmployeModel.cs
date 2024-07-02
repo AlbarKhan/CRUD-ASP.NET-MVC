@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 
@@ -17,6 +18,21 @@ namespace CRUD.Models
         public string Phone { get; set; }
         public DateTime BirthDate { get; set; }
         public bool IsDeleted { get; set; }
-
+        public string FullName
+        {
+            get
+            {
+                string fullName = FirstName + " " + LastName;
+                return fullName;
+            }
+        }
+        public int Age
+        {
+            get
+            {
+                int age = DateTime.Now.Year - BirthDate.Year;
+                return age;
+            }
+        }
     }
 }

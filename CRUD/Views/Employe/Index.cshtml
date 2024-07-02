@@ -1,0 +1,66 @@
+﻿@model IEnumerable<CRUD.Models.EmployeModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class="btn btn-primary"})
+</p>
+<table class="table border table-dark">
+    <tr>
+        <th>
+            Sr No
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Department)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Age)
+        </th>
+
+        <th>Action</th>
+    </tr>
+
+    @{
+        var modelList = Model.ToList();
+    }
+
+    @for (int i = 0; i < modelList.Count; i++)
+    {
+        int srno = i + 1;
+        <tr>
+            <td>
+                <!-- You can put any additional data here if needed -->
+                @Html.DisplayFor(modelItem=> srno)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelList[i].FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelList[i].Department)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelList[i].Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelList[i].Age)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = modelList[i].Id },new { @class="btn btn-info"}) |
+                @Html.ActionLink("Edit", "Edit", new { id = modelList[i].Id }, new { @class = "btn btn-warning" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = modelList[i].Id }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+
+
+</table>

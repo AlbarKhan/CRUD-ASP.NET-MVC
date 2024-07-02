@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CRUD.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,9 +10,11 @@ namespace CRUD.Controllers
     public class EmployeController : Controller
     {
         // GET: Employe
+        EmployeRepository employeRepository = new EmployeRepository();
         public ActionResult Index()
         {
-            return View();
+            //var result = employeRepository.Get
+            return View(employeRepository.GetAllEmployee());
         }
     }
 }
