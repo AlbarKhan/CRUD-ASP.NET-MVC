@@ -15,6 +15,7 @@ namespace CRUD.Models
         public string Department {  get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public DateTime BirthDate { get; set; }
         public bool IsDeleted { get; set; }
 
     }
