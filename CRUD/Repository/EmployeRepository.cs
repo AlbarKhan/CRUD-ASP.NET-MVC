@@ -29,5 +29,24 @@ namespace CRUD.Repository
                 return dbConnection.Query<EmployeModel>("usp_Employees_GetAllUsers", commandType: CommandType.StoredProcedure).ToList();
             }
         }
+
+        public void InsertEmployee(EmployeModel employe)
+        {
+
+            using(IDbConnection dbConnection = Connection)
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@FirstName", employe.FirstName);
+                parameters.Add("@LastName", employe.LastName);
+                parameters.Add("@Department", employe.Department);
+                parameters.Add("@Email", employe.Email);
+                parameters.Add("@Phone", employe.Phone);
+                parameters.Add("@BirthDate", employe.BirthDate);
+                parameters.Add("@UserName", employe.UserName);
+                parameters.Add("@Password", employe.Password);
+                dbConnection.Open();
+                dbConnection.Execute("usp_Employees_Insert", parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
     }
 }

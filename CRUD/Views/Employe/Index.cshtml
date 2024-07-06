@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("Create New", "Create", null, new { @class="btn btn-primary"})
 </p>
-<table class="table border table-dark">
+<table class="table border table-dark table-striped">
     <tr>
         <th>
             Sr No
@@ -55,7 +55,7 @@
                 @Html.DisplayFor(modelItem => modelList[i].Age)
             </td>
             <td>
-                @Html.ActionLink("Details", "Details", new { id = modelList[i].Id },new { @class="btn btn-info"}) |
+                
                 @Html.ActionLink("Edit", "Edit", new { id = modelList[i].Id }, new { @class = "btn btn-warning" }) |
                 @Html.ActionLink("Delete", "Delete", new { id = modelList[i].Id }, new { @class = "btn btn-danger" })
             </td>

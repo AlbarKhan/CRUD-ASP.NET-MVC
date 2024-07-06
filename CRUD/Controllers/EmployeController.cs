@@ -1,4 +1,5 @@
-﻿using CRUD.Repository;
+﻿using CRUD.Models;
+using CRUD.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,22 @@ namespace CRUD.Controllers
             //var result = employeRepository.Get
             return View(employeRepository.GetAllEmployee());
         }
+
+        [HttpGet]
+        public ActionResult Create(EmployeModel employe)
+        {
+            var CurrentTime = DateTime.Now.ToString("yyyy-MM-dd");
+            ViewBag.CurrentTime = CurrentTime;
+            return View(employe);
+        }
+
+        [HttpPost,ActionName("Create")]     
+        [ValidateAntiForgeryToken]
+        public ActionResult Add([Bind(Include ="FirstName,LastName,Department,Email,Phone,BirthDate,UserName,Password")] EmployeModel employe)
+        {
+            employeRepository.InsertEmployee(employe);
+            return RedirectToAction("Index");
+        }
     }
 }
+
