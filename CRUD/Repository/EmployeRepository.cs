@@ -29,6 +29,16 @@ namespace CRUD.Repository
                 return dbConnection.Query<EmployeModel>("usp_Employees_GetAllUsers", commandType: CommandType.StoredProcedure).ToList();
             }
         }
+        public EmployeModel GetEmpById(int id)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@Id", id);
+                dbConnection.Open();
+                return dbConnection.Query<EmployeModel>("usp_Employees_GetById", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault();
+            }
+        }
 
         public void InsertEmployee(EmployeModel employe)
         {
@@ -48,5 +58,37 @@ namespace CRUD.Repository
                 dbConnection.Execute("usp_Employees_Insert", parameters, commandType: CommandType.StoredProcedure);
             }
         }
+
+        public void UpdateEmployee(EmployeModel employe)
+        {
+            using(IDbConnection dbConnection = Connection)
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@Id",employe.Id);
+                parameters.Add("@FirstName",employe.FirstName);
+                parameters.Add("@LastName", employe.LastName);
+                parameters.Add("@Department", employe.Department);
+                parameters.Add("@Email", employe.Email);
+                parameters.Add("@Phone", employe.Phone);
+                parameters.Add("@BirthDate", employe.BirthDate);
+                parameters.Add("UserName", employe.UserName);
+                parameters.Add("@Password", employe.Password);
+                dbConnection.Open();
+                dbConnection.Execute("usp_Employees_Update",parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public void SoftDeletEmployee(int id)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@Id", id);
+                dbConnection.Open();
+                dbConnection.Execute("usp_Employees_SoftDelete", parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        
     }
 }

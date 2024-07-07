@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Linq;
 using System.Web;
@@ -16,6 +17,8 @@ namespace CRUD.Models
         public string Department {  get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime BirthDate { get; set; }
         public bool IsDeleted { get; set; }
         public string FullName
