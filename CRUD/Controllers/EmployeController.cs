@@ -13,15 +13,17 @@ namespace CRUD.Controllers
     {
         // GET: Employe
         EmployeRepository employeRepository = new EmployeRepository();
-        public ActionResult Index(string mode,int? id)
+        public ActionResult Index(string mode,int? id,bool isDeleted=false)
         {
-            var result = employeRepository.GetAllEmployee();
+            var result = employeRepository.GetAllEmployee(isDeleted);
             if(!string.IsNullOrEmpty(mode) && id.HasValue)
             {
                 switch(mode.ToLower())
                 {
                     case "softdelete":
                         return DeleteConfirm(id.Value);
+                    case "restore":
+                        return RestoreEmployee(id.Value);
                     default:
                         return View(result);
                 }
@@ -69,13 +71,18 @@ namespace CRUD.Controllers
             
         }
 
-       
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirm(int id)
         {
             employeRepository.SoftDeletEmployee(id);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult RestoreEmployee(int id)
+        {
+            employeRepository.RestoreEmployee(id);
             return RedirectToAction("Index");
         }
     }

@@ -3,11 +3,26 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var isDeleted = false;
+    if (!String.IsNullOrEmpty(Request.QueryString["isDeleted"]))
+    {
+        Boolean.TryParse(Request.QueryString["isDeleted"], out isDeleted);
+    }
 }
 
 
 <p>
-    @Html.ActionLink("Create New", "Create", null, new { @class="btn btn-primary"})
+    @Html.ActionLink("Create New", "Create", null,new { @class = "btn btn-primary" })
+    @if (isDeleted)
+    {
+
+        @Html.ActionLink("Active Users", "Index", new { isDeleted = false }, new { @class = "btn btn-primary" })
+    }
+    else
+    {
+        @Html.ActionLink("Deleted Users", "Index", new { isDeleted = true }, new { @class = "btn btn-primary" })
+    }
+
 </p>
 <table class="table border table-dark table-striped">
     <tr>
@@ -40,7 +55,7 @@
         <tr>
             <td>
                 <!-- You can put any additional data here if needed -->
-                @Html.DisplayFor(modelItem=> srno)
+                @Html.DisplayFor(modelItem => srno)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => modelList[i].FullName)
@@ -49,16 +64,27 @@
                 @Html.DisplayFor(modelItem => modelList[i].Department)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => modelList[i].Email)
+                @modelList[i].Email
             </td>
             <td>
                 @Html.DisplayFor(modelItem => modelList[i].Age)
             </td>
-            <td>
+            @if (isDeleted)
+            {
                 
-                @Html.ActionLink("Edit", "Edit", new { id = modelList[i].Id }, new { @class = "btn btn-warning" }) |
-                @Html.ActionLink("Delete", "Index", new {mode="softdelete", id = modelList[i].Id }, new { @class = "btn btn-danger", @onclick="return confirm('Are you sure you want to delete this user')" })
-            </td>
+                <td>
+                    @Html.ActionLink(" ", "Index", new { mode = "restore", id = modelList[i].Id }, new { @class = "btn btn-primary fa-solid fa-trash-arrow-up", @onclick = "return confirm('Are you sure you want to Restore this user')" })
+                </td>
+
+            }
+            else
+            {
+                <td>
+                    @Html.ActionLink(" ", "Edit", new { id = modelList[i].Id }, new { @class = "btn btn-warning fa-solid fa-user-pen" }) |
+                    @Html.ActionLink(" ", "Index", new { mode = "softdelete", id = modelList[i].Id }, new { @class = "btn btn-danger fa-solid fa-trash", @onclick = "return confirm('Are you sure you want to delete this user')" })
+                </td>
+            }
+
         </tr>
     }
 

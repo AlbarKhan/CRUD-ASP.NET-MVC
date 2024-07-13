@@ -21,12 +21,14 @@ namespace CRUD.Repository
 
         private IDbConnection Connection => new SqlConnection(_connectionString);
 
-        public IEnumerable<EmployeModel> GetAllEmployee()
+        public IEnumerable<EmployeModel> GetAllEmployee(bool isDeleted)
         {
             using (IDbConnection dbConnection = Connection)
             {
+                var parameters = new DynamicParameters();
+                parameters.Add("@IsDeleted", isDeleted);
                 dbConnection.Open();
-                return dbConnection.Query<EmployeModel>("usp_Employees_GetAllUsers", commandType: CommandType.StoredProcedure).ToList();
+                return dbConnection.Query<EmployeModel>("usp_Employees_GetAllUsers", parameters,commandType: CommandType.StoredProcedure).ToList();
             }
         }
         public EmployeModel GetEmpById(int id)
@@ -36,7 +38,7 @@ namespace CRUD.Repository
                 var parameters = new DynamicParameters();
                 parameters.Add("@Id", id);
                 dbConnection.Open();
-                return dbConnection.Query<EmployeModel>("usp_Employees_GetById", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                return dbConnection.QuerySingle<EmployeModel>("usp_Employees_GetById", parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
@@ -86,6 +88,17 @@ namespace CRUD.Repository
                 parameters.Add("@Id", id);
                 dbConnection.Open();
                 dbConnection.Execute("usp_Employees_SoftDelete", parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public void RestoreEmployee(int id)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@Id", id);
+                dbConnection.Open();
+                dbConnection.Execute("usp_Employees_Restore", parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
